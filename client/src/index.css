@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-navy: #2F4156;
+  --color-teal: #567C8D;
+  --color-sky-blue: #C8D9E6;
+  --color-beige: #F5EFEB;
+  --color-white: #FFFFFF;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -9,5 +17,53 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+  }
+  
+  .bg-navy {
+    background-color: var(--color-navy);
+  }
+  
+  .bg-teal {
+    background-color: var(--color-teal);
+  }
+  
+  .bg-sky-blue {
+    background-color: var(--color-sky-blue);
+  }
+  
+  .bg-beige {
+    background-color: var(--color-beige);
+  }
+  
+  .text-navy {
+    color: var(--color-navy);
+  }
+  
+  .text-teal {
+    color: var(--color-teal);
+  }
+  
+  .text-sky-blue {
+    color: var(--color-sky-blue);
+  }
+  
+  .text-beige {
+    color: var(--color-beige);
+  }
+  
+  .border-navy {
+    border-color: var(--color-navy);
+  }
+  
+  .border-teal {
+    border-color: var(--color-teal);
+  }
+  
+  .border-sky-blue {
+    border-color: var(--color-sky-blue);
+  }
+  
+  .border-beige {
+    border-color: var(--color-beige);
   }
 }

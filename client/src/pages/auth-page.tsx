@@ -88,39 +88,39 @@ export default function AuthPage() {
   }
   
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
+    <div className="min-h-screen bg-beige dark:bg-navy flex flex-col">
       {/* Navbar with logo and theme toggle */}
-      <header className="w-full bg-white dark:bg-slate-800 shadow-sm py-4 px-6">
+      <header className="w-full bg-white dark:bg-navy border-b border-sky-blue dark:border-teal shadow-sm py-4 px-6">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">U</div>
-            <span className="ml-3 font-bold text-xl text-primary">UniManage</span>
+            <div className="w-10 h-10 rounded-full bg-navy dark:bg-teal flex items-center justify-center text-white font-bold text-xl">U</div>
+            <span className="ml-3 font-bold text-xl text-navy dark:text-white">UniManage</span>
           </div>
           <ThemeToggle />
         </div>
       </header>
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 bg-beige dark:bg-navy">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto items-center min-h-[80vh]">
             {/* Authentication Forms */}
             <div className="w-full">
               <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="login">Login</TabsTrigger>
-                  <TabsTrigger value="register">Register</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 mb-6 bg-sky-blue dark:bg-teal">
+                  <TabsTrigger value="login" className="data-[state=active]:bg-white dark:data-[state=active]:bg-navy data-[state=active]:text-navy dark:data-[state=active]:text-white">Login</TabsTrigger>
+                  <TabsTrigger value="register" className="data-[state=active]:bg-white dark:data-[state=active]:bg-navy data-[state=active]:text-navy dark:data-[state=active]:text-white">Register</TabsTrigger>
                 </TabsList>
                 
                 {/* Login Form */}
                 <TabsContent value="login">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Login to Your Account</CardTitle>
-                      <CardDescription>
+                  <Card className="border-sky-blue dark:border-teal">
+                    <CardHeader className="bg-sky-blue/20 dark:bg-teal/10">
+                      <CardTitle className="text-navy dark:text-white">Login to Your Account</CardTitle>
+                      <CardDescription className="text-navy/70 dark:text-white/70">
                         Enter your credentials to access your account
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-6">
                       <Form {...loginForm}>
                         <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
                           <FormField
@@ -128,9 +128,9 @@ export default function AuthPage() {
                             name="username"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Username</FormLabel>
+                                <FormLabel className="text-navy dark:text-white">Username</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Enter your username" {...field} />
+                                  <Input placeholder="Enter your username" {...field} className="border-sky-blue dark:border-teal" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -141,9 +141,9 @@ export default function AuthPage() {
                             name="password"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Password</FormLabel>
+                                <FormLabel className="text-navy dark:text-white">Password</FormLabel>
                                 <FormControl>
-                                  <Input type="password" placeholder="Enter your password" {...field} />
+                                  <Input type="password" placeholder="Enter your password" {...field} className="border-sky-blue dark:border-teal" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -151,7 +151,7 @@ export default function AuthPage() {
                           />
                           <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full bg-navy hover:bg-teal dark:bg-teal dark:hover:bg-sky-blue dark:hover:text-navy"
                             disabled={loginMutation.isPending}
                           >
                             {loginMutation.isPending ? "Logging in..." : "Login"}
@@ -164,14 +164,14 @@ export default function AuthPage() {
                 
                 {/* Register Form */}
                 <TabsContent value="register">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Create an Account</CardTitle>
-                      <CardDescription>
+                  <Card className="border-sky-blue dark:border-teal">
+                    <CardHeader className="bg-sky-blue/20 dark:bg-teal/10">
+                      <CardTitle className="text-navy dark:text-white">Create an Account</CardTitle>
+                      <CardDescription className="text-navy/70 dark:text-white/70">
                         Fill in your details to create a new account
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-6">
                       <Form {...registerForm}>
                         <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-4">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -180,9 +180,9 @@ export default function AuthPage() {
                               name="firstName"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>First Name</FormLabel>
+                                  <FormLabel className="text-navy dark:text-white">First Name</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="John" {...field} />
+                                    <Input placeholder="John" {...field} className="border-sky-blue dark:border-teal" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -193,9 +193,9 @@ export default function AuthPage() {
                               name="lastName"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Last Name</FormLabel>
+                                  <FormLabel className="text-navy dark:text-white">Last Name</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="Doe" {...field} />
+                                    <Input placeholder="Doe" {...field} className="border-sky-blue dark:border-teal" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -208,9 +208,9 @@ export default function AuthPage() {
                             name="username"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Username</FormLabel>
+                                <FormLabel className="text-navy dark:text-white">Username</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="johndoe" {...field} />
+                                  <Input placeholder="johndoe" {...field} className="border-sky-blue dark:border-teal" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -222,9 +222,9 @@ export default function AuthPage() {
                             name="email"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel className="text-navy dark:text-white">Email</FormLabel>
                                 <FormControl>
-                                  <Input type="email" placeholder="john@example.edu" {...field} />
+                                  <Input type="email" placeholder="john@example.edu" {...field} className="border-sky-blue dark:border-teal" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -236,13 +236,13 @@ export default function AuthPage() {
                             name="role"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Role</FormLabel>
+                                <FormLabel className="text-navy dark:text-white">Role</FormLabel>
                                 <Select 
                                   onValueChange={field.onChange} 
                                   defaultValue={field.value}
                                 >
                                   <FormControl>
-                                    <SelectTrigger>
+                                    <SelectTrigger className="border-sky-blue dark:border-teal">
                                       <SelectValue placeholder="Select your role" />
                                     </SelectTrigger>
                                   </FormControl>
@@ -263,9 +263,9 @@ export default function AuthPage() {
                               name="password"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Password</FormLabel>
+                                  <FormLabel className="text-navy dark:text-white">Password</FormLabel>
                                   <FormControl>
-                                    <Input type="password" placeholder="******" {...field} />
+                                    <Input type="password" placeholder="******" {...field} className="border-sky-blue dark:border-teal" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -276,9 +276,9 @@ export default function AuthPage() {
                               name="confirmPassword"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Confirm Password</FormLabel>
+                                  <FormLabel className="text-navy dark:text-white">Confirm Password</FormLabel>
                                   <FormControl>
-                                    <Input type="password" placeholder="******" {...field} />
+                                    <Input type="password" placeholder="******" {...field} className="border-sky-blue dark:border-teal" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -288,7 +288,7 @@ export default function AuthPage() {
                           
                           <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full bg-navy hover:bg-teal dark:bg-teal dark:hover:bg-sky-blue dark:hover:text-navy"
                             disabled={registerMutation.isPending}
                           >
                             {registerMutation.isPending ? "Registering..." : "Register"}
@@ -303,26 +303,26 @@ export default function AuthPage() {
             
             {/* Hero Section */}
             <div className="flex flex-col h-full justify-center order-first md:order-last">
-              <h1 className="text-4xl font-bold text-primary mb-6">University Management System</h1>
-              <p className="text-lg text-slate-600 dark:text-slate-300 mb-8">
+              <h1 className="text-4xl font-bold text-navy dark:text-white mb-6">University Management System</h1>
+              <p className="text-lg text-navy/80 dark:text-white/80 mb-8">
                 A comprehensive platform for administrators, faculty members, and students to manage university activities efficiently.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FeatureCard 
-                  icon={<UserCog className="w-8 h-8 text-primary" />} 
+                  icon={<UserCog className="w-8 h-8 text-navy dark:text-teal" />} 
                   title="Admin Portal"
                   description="Manage faculty, students, departments, and classrooms all in one place."
                 />
                 
                 <FeatureCard 
-                  icon={<BookOpen className="w-8 h-8 text-secondary" />} 
+                  icon={<BookOpen className="w-8 h-8 text-teal dark:text-sky-blue" />} 
                   title="Faculty Dashboard"
                   description="Manage classes, assignments, and student progress efficiently."
                 />
                 
                 <FeatureCard 
-                  icon={<School className="w-8 h-8 text-accent" />} 
+                  icon={<School className="w-8 h-8 text-sky-blue dark:text-white" />} 
                   title="Student Experience"
                   description="Access courses, track achievements, and connect with peers."
                 />
@@ -343,10 +343,10 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
-    <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+    <div className="bg-white dark:bg-navy border border-sky-blue dark:border-teal p-6 rounded-lg shadow-md">
       <div className="mb-4">{icon}</div>
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-sm text-slate-600 dark:text-slate-300">{description}</p>
+      <h3 className="text-lg font-semibold mb-2 text-navy dark:text-white">{title}</h3>
+      <p className="text-sm text-navy/70 dark:text-white/70">{description}</p>
     </div>
   );
 }
