@@ -83,7 +83,7 @@ export default function AdminDashboard() {
       {/* Quick Actions */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <QuickActionButton
             icon={<DoorOpen className="text-primary" />}
             title="Create Classroom"
@@ -106,6 +106,14 @@ export default function AdminDashboard() {
             description="Configure departments"
             bgColor="bg-amber-100 dark:bg-slate-700"
             linkTo="/admin/departments"
+          />
+          
+          <QuickActionButton
+            icon={<BarChart3 className="text-purple-500" />}
+            title="Advanced Analytics"
+            description="View detailed insights"
+            bgColor="bg-purple-100 dark:bg-slate-700"
+            linkTo="/admin/analytics"
           />
         </div>
       </div>
