@@ -13,7 +13,7 @@ const MemoryStore = createMemoryStore(session);
 
 export interface IStorage {
   // Session store
-  sessionStore: session.SessionStore;
+  sessionStore: session.Store;
   
   // User methods
   getUser(id: number): Promise<User | undefined>;
