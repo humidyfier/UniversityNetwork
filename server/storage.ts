@@ -91,7 +91,7 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
-  sessionStore: session.SessionStore;
+  sessionStore: session.Store;
   
   private users: Map<number, User>;
   private departments: Map<number, Department>;
