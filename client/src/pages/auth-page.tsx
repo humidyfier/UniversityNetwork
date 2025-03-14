@@ -88,35 +88,35 @@ export default function AuthPage() {
   }
   
   return (
-    <div className="min-h-screen bg-beige dark:bg-navy flex flex-col">
+    <div className="min-h-screen bg-beige dark:bg-[#1a2536] flex flex-col">
       {/* Navbar with logo and theme toggle */}
-      <header className="w-full bg-white dark:bg-navy border-b border-sky-blue dark:border-teal shadow-sm py-4 px-6">
+      <header className="w-full bg-white dark:bg-[#263549] border-b border-sky-blue dark:border-teal/50 shadow-sm py-4 px-6">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-navy dark:bg-teal flex items-center justify-center text-white font-bold text-xl">U</div>
-            <span className="ml-3 font-bold text-xl text-navy dark:text-white">UniManage</span>
+            <div className="w-10 h-10 rounded-full bg-navy dark:bg-sky-blue flex items-center justify-center text-white dark:text-navy font-bold text-xl">U</div>
+            <span className="ml-3 font-bold text-xl text-navy dark:text-sky-blue">UniManage</span>
           </div>
           <ThemeToggle />
         </div>
       </header>
       
-      <div className="flex flex-1 bg-beige dark:bg-navy">
+      <div className="flex flex-1 bg-beige dark:bg-[#1a2536]">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto items-center min-h-[80vh]">
             {/* Authentication Forms */}
             <div className="w-full">
               <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6 bg-sky-blue dark:bg-teal">
-                  <TabsTrigger value="login" className="data-[state=active]:bg-white dark:data-[state=active]:bg-navy data-[state=active]:text-navy dark:data-[state=active]:text-white">Login</TabsTrigger>
-                  <TabsTrigger value="register" className="data-[state=active]:bg-white dark:data-[state=active]:bg-navy data-[state=active]:text-navy dark:data-[state=active]:text-white">Register</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 mb-6 bg-sky-blue dark:bg-[#2a3d56]">
+                  <TabsTrigger value="login" className="data-[state=active]:bg-white dark:data-[state=active]:bg-teal/90 data-[state=active]:text-navy dark:data-[state=active]:text-white">Login</TabsTrigger>
+                  <TabsTrigger value="register" className="data-[state=active]:bg-white dark:data-[state=active]:bg-teal/90 data-[state=active]:text-navy dark:data-[state=active]:text-white">Register</TabsTrigger>
                 </TabsList>
                 
                 {/* Login Form */}
                 <TabsContent value="login">
-                  <Card className="border-sky-blue dark:border-teal">
-                    <CardHeader className="bg-sky-blue/20 dark:bg-teal/10">
+                  <Card className="border-sky-blue dark:border-teal/70 dark:bg-[#263549]">
+                    <CardHeader className="bg-sky-blue/20 dark:bg-teal/30">
                       <CardTitle className="text-navy dark:text-white">Login to Your Account</CardTitle>
-                      <CardDescription className="text-navy/70 dark:text-white/70">
+                      <CardDescription className="text-navy/70 dark:text-white/90">
                         Enter your credentials to access your account
                       </CardDescription>
                     </CardHeader>
@@ -128,9 +128,9 @@ export default function AuthPage() {
                             name="username"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-navy dark:text-white">Username</FormLabel>
+                                <FormLabel className="text-navy dark:text-sky-blue">Username</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Enter your username" {...field} className="border-sky-blue dark:border-teal" />
+                                  <Input placeholder="Enter your username" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -141,9 +141,9 @@ export default function AuthPage() {
                             name="password"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-navy dark:text-white">Password</FormLabel>
+                                <FormLabel className="text-navy dark:text-sky-blue">Password</FormLabel>
                                 <FormControl>
-                                  <Input type="password" placeholder="Enter your password" {...field} className="border-sky-blue dark:border-teal" />
+                                  <Input type="password" placeholder="Enter your password" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -151,7 +151,7 @@ export default function AuthPage() {
                           />
                           <Button
                             type="submit"
-                            className="w-full bg-navy hover:bg-teal dark:bg-teal dark:hover:bg-sky-blue dark:hover:text-navy"
+                            className="w-full bg-navy hover:bg-teal dark:bg-sky-blue dark:text-navy dark:hover:bg-teal dark:hover:text-white"
                             disabled={loginMutation.isPending}
                           >
                             {loginMutation.isPending ? "Logging in..." : "Login"}
@@ -164,10 +164,10 @@ export default function AuthPage() {
                 
                 {/* Register Form */}
                 <TabsContent value="register">
-                  <Card className="border-sky-blue dark:border-teal">
-                    <CardHeader className="bg-sky-blue/20 dark:bg-teal/10">
+                  <Card className="border-sky-blue dark:border-teal/70 dark:bg-[#263549]">
+                    <CardHeader className="bg-sky-blue/20 dark:bg-teal/30">
                       <CardTitle className="text-navy dark:text-white">Create an Account</CardTitle>
-                      <CardDescription className="text-navy/70 dark:text-white/70">
+                      <CardDescription className="text-navy/70 dark:text-white/90">
                         Fill in your details to create a new account
                       </CardDescription>
                     </CardHeader>
@@ -180,9 +180,9 @@ export default function AuthPage() {
                               name="firstName"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-navy dark:text-white">First Name</FormLabel>
+                                  <FormLabel className="text-navy dark:text-sky-blue">First Name</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="John" {...field} className="border-sky-blue dark:border-teal" />
+                                    <Input placeholder="John" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -193,9 +193,9 @@ export default function AuthPage() {
                               name="lastName"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-navy dark:text-white">Last Name</FormLabel>
+                                  <FormLabel className="text-navy dark:text-sky-blue">Last Name</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="Doe" {...field} className="border-sky-blue dark:border-teal" />
+                                    <Input placeholder="Doe" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -208,9 +208,9 @@ export default function AuthPage() {
                             name="username"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-navy dark:text-white">Username</FormLabel>
+                                <FormLabel className="text-navy dark:text-sky-blue">Username</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="johndoe" {...field} className="border-sky-blue dark:border-teal" />
+                                  <Input placeholder="johndoe" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -222,9 +222,9 @@ export default function AuthPage() {
                             name="email"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-navy dark:text-white">Email</FormLabel>
+                                <FormLabel className="text-navy dark:text-sky-blue">Email</FormLabel>
                                 <FormControl>
-                                  <Input type="email" placeholder="john@example.edu" {...field} className="border-sky-blue dark:border-teal" />
+                                  <Input type="email" placeholder="john@example.edu" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -236,17 +236,17 @@ export default function AuthPage() {
                             name="role"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-navy dark:text-white">Role</FormLabel>
+                                <FormLabel className="text-navy dark:text-sky-blue">Role</FormLabel>
                                 <Select 
                                   onValueChange={field.onChange} 
                                   defaultValue={field.value}
                                 >
                                   <FormControl>
-                                    <SelectTrigger className="border-sky-blue dark:border-teal">
+                                    <SelectTrigger className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white">
                                       <SelectValue placeholder="Select your role" />
                                     </SelectTrigger>
                                   </FormControl>
-                                  <SelectContent>
+                                  <SelectContent className="dark:bg-[#263549] dark:border-teal/70">
                                     <SelectItem value={UserRole.STUDENT}>Student</SelectItem>
                                     <SelectItem value={UserRole.FACULTY}>Faculty</SelectItem>
                                     <SelectItem value={UserRole.ADMIN}>Administrator</SelectItem>
@@ -263,9 +263,9 @@ export default function AuthPage() {
                               name="password"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-navy dark:text-white">Password</FormLabel>
+                                  <FormLabel className="text-navy dark:text-sky-blue">Password</FormLabel>
                                   <FormControl>
-                                    <Input type="password" placeholder="******" {...field} className="border-sky-blue dark:border-teal" />
+                                    <Input type="password" placeholder="******" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -276,9 +276,9 @@ export default function AuthPage() {
                               name="confirmPassword"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="text-navy dark:text-white">Confirm Password</FormLabel>
+                                  <FormLabel className="text-navy dark:text-sky-blue">Confirm Password</FormLabel>
                                   <FormControl>
-                                    <Input type="password" placeholder="******" {...field} className="border-sky-blue dark:border-teal" />
+                                    <Input type="password" placeholder="******" {...field} className="border-sky-blue dark:border-teal/70 dark:bg-[#1e2c3d] dark:text-white" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -288,7 +288,7 @@ export default function AuthPage() {
                           
                           <Button
                             type="submit"
-                            className="w-full bg-navy hover:bg-teal dark:bg-teal dark:hover:bg-sky-blue dark:hover:text-navy"
+                            className="w-full bg-navy hover:bg-teal dark:bg-sky-blue dark:text-navy dark:hover:bg-teal dark:hover:text-white"
                             disabled={registerMutation.isPending}
                           >
                             {registerMutation.isPending ? "Registering..." : "Register"}
@@ -303,20 +303,20 @@ export default function AuthPage() {
             
             {/* Hero Section */}
             <div className="flex flex-col h-full justify-center order-first md:order-last">
-              <h1 className="text-4xl font-bold text-navy dark:text-white mb-6">University Management System</h1>
-              <p className="text-lg text-navy/80 dark:text-white/80 mb-8">
+              <h1 className="text-4xl font-bold text-navy dark:text-sky-blue mb-6">University Management System</h1>
+              <p className="text-lg text-navy/80 dark:text-white/90 mb-8">
                 A comprehensive platform for administrators, faculty members, and students to manage university activities efficiently.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FeatureCard 
-                  icon={<UserCog className="w-8 h-8 text-navy dark:text-teal" />} 
+                  icon={<UserCog className="w-8 h-8 text-navy dark:text-sky-blue" />} 
                   title="Admin Portal"
                   description="Manage faculty, students, departments, and classrooms all in one place."
                 />
                 
                 <FeatureCard 
-                  icon={<BookOpen className="w-8 h-8 text-teal dark:text-sky-blue" />} 
+                  icon={<BookOpen className="w-8 h-8 text-teal dark:text-teal" />} 
                   title="Faculty Dashboard"
                   description="Manage classes, assignments, and student progress efficiently."
                 />
@@ -343,10 +343,10 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
-    <div className="bg-white dark:bg-navy border border-sky-blue dark:border-teal p-6 rounded-lg shadow-md">
+    <div className="bg-white dark:bg-[#263549] border border-sky-blue dark:border-teal/70 p-6 rounded-lg shadow-md">
       <div className="mb-4">{icon}</div>
-      <h3 className="text-lg font-semibold mb-2 text-navy dark:text-white">{title}</h3>
-      <p className="text-sm text-navy/70 dark:text-white/70">{description}</p>
+      <h3 className="text-lg font-semibold mb-2 text-navy dark:text-sky-blue">{title}</h3>
+      <p className="text-sm text-navy/70 dark:text-white/80">{description}</p>
     </div>
   );
 }
