@@ -384,7 +384,15 @@ export class MemStorage implements IStorage {
   async createAssignment(assignment: InsertAssignment): Promise<Assignment> {
     const id = this.assignmentIdCounter++;
     const now = new Date();
-    const newAssignment: Assignment = { ...assignment, id, createdAt: now };
+    const newAssignment: Assignment = { 
+      ...assignment, 
+      id, 
+      createdAt: now,
+      description: assignment.description || null,
+      dueDate: assignment.dueDate || null,
+      totalMarks: assignment.totalMarks || null,
+      weightage: assignment.weightage || null
+    };
     this.assignments.set(id, newAssignment);
     return newAssignment;
   }
@@ -406,7 +414,10 @@ export class MemStorage implements IStorage {
     const newSubmission: Submission = { 
       ...submission, 
       id, 
-      submissionDate: now
+      submissionDate: now,
+      content: submission.content || null,
+      marks: submission.marks || null,
+      feedback: submission.feedback || null
     };
     this.submissions.set(id, newSubmission);
     return newSubmission;
@@ -432,7 +443,12 @@ export class MemStorage implements IStorage {
   async createMaterial(material: InsertMaterial): Promise<Material> {
     const id = this.materialIdCounter++;
     const now = new Date();
-    const newMaterial: Material = { ...material, id, createdAt: now };
+    const newMaterial: Material = { 
+      ...material, 
+      id, 
+      createdAt: now,
+      description: material.description || null
+    };
     this.materials.set(id, newMaterial);
     return newMaterial;
   }
@@ -451,7 +467,12 @@ export class MemStorage implements IStorage {
   async createAchievement(achievement: InsertAchievement): Promise<Achievement> {
     const id = this.achievementIdCounter++;
     const now = new Date();
-    const newAchievement: Achievement = { ...achievement, id, date: now };
+    const newAchievement: Achievement = { 
+      ...achievement, 
+      id, 
+      date: now,
+      description: achievement.description || null
+    };
     this.achievements.set(id, newAchievement);
     return newAchievement;
   }
@@ -531,7 +552,12 @@ export class MemStorage implements IStorage {
   async createAnnouncement(announcement: InsertAnnouncement): Promise<Announcement> {
     const id = this.announcementIdCounter++;
     const now = new Date();
-    const newAnnouncement: Announcement = { ...announcement, id, createdAt: now };
+    const newAnnouncement: Announcement = { 
+      ...announcement, 
+      id, 
+      createdAt: now,
+      description: announcement.description || null
+    };
     this.announcements.set(id, newAnnouncement);
     return newAnnouncement;
   }
