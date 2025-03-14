@@ -291,24 +291,22 @@ export default function AuthPage() {
                       <CardContent className="pt-6 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-sky-blue dark:scrollbar-thumb-teal/70 scrollbar-track-transparent">
                         {selectedRole === "admin" && (
                           <div className="animate-fadeIn">
-                            <AdminFeatures />
                             <AdminRegisterForm registerMutation={registerMutation} />
                           </div>
                         )}
                         
                         {selectedRole === "faculty" && (
                           <div className="animate-fadeIn">
-                            <FacultyFeatures />
                             <FacultyRegisterForm registerMutation={registerMutation} />
                           </div>
                         )}
                         
                         {selectedRole === "student" && (
                           <div className="animate-fadeIn">
-                            <StudentFeatures />
                             <StudentRegisterForm registerMutation={registerMutation} />
                           </div>
                         )}
+                      </CardContent>
                       </CardContent>
                     </Card>
                   </TabsContent>
@@ -386,7 +384,7 @@ function FeaturePoint({ icon, text }: { icon: React.ReactNode, text: string }) {
 // Role specific features
 function AdminFeatures() {
   return (
-    <div className="space-y-4 mb-6">
+    <div className="space-y-4">
       <h3 className="text-xl font-bold text-navy dark:text-sky-blue mb-4">Administrator Features</h3>
       <ul className="space-y-3">
         <FeatureItem text="Comprehensive user management for faculty and students" />
@@ -400,7 +398,7 @@ function AdminFeatures() {
 
 function FacultyFeatures() {
   return (
-    <div className="space-y-4 mb-6">
+    <div className="space-y-4">
       <h3 className="text-xl font-bold text-navy dark:text-sky-blue mb-4">Faculty Features</h3>
       <ul className="space-y-3">
         <FeatureItem text="Create and manage course materials and assignments" />
@@ -414,7 +412,7 @@ function FacultyFeatures() {
 
 function StudentFeatures() {
   return (
-    <div className="space-y-4 mb-6">
+    <div className="space-y-4">
       <h3 className="text-xl font-bold text-navy dark:text-sky-blue mb-4">Student Features</h3>
       <ul className="space-y-3">
         <FeatureItem text="Access course materials and assignments" />
