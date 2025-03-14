@@ -261,6 +261,289 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Analytics endpoints for the admin dashboard
+  // =========================================
+  
+  app.get("/api/analytics/students", isAuthenticated, hasRole(UserRole.ADMIN), async (req, res) => {
+    try {
+      const students = await storage.getAllStudents();
+      
+      // Calculate basic analytics
+      const totalStudents = students.length;
+      const byDepartment = new Map<number, number>();
+      const byYear = new Map<number, number>();
+      const averageGpa = students.reduce((acc, s) => acc + parseFloat(s.gpa || "0"), 0) / totalStudents;
+      
+      students.forEach(student => {
+        // Count by department
+        const deptId = student.departmentId || 0;
+        byDepartment.set(deptId, (byDepartment.get(deptId) || 0) + 1);
+        
+        // Count by year
+        byYear.set(student.year, (byYear.get(student.year) || 0) + 1);
+      });
+      
+      // Format response
+      const response = {
+        totalStudents,
+        averageGpa: averageGpa.toFixed(2),
+        byDepartment: Array.from(byDepartment.entries()).map(([deptId, count]) => ({ departmentId: deptId, count })),
+        byYear: Array.from(byYear.entries()).map(([year, count]) => ({ year, count })),
+        // Include more detailed student data
+        students: students.map(student => ({
+          id: student.id,
+          name: `${student.user.firstName} ${student.user.lastName}`,
+          year: student.year,
+          gpa: student.gpa,
+          achievementPoints: student.achievementPoints,
+          departmentId: student.departmentId
+        }))
+      };
+      
+      res.json(response);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch student analytics" });
+    }
+  });
+  
+  app.get("/api/analytics/faculty", isAuthenticated, hasRole(UserRole.ADMIN), async (req, res) => {
+    try {
+      const faculty = await storage.getAllFaculty();
+      const classrooms = await storage.getAllClassrooms();
+      
+      // Calculate basic analytics
+      const totalFaculty = faculty.length;
+      const byDepartment = new Map<number, number>();
+      
+      // Count classrooms per faculty
+      const classroomsByFaculty = new Map<number, number>();
+      classrooms.forEach(classroom => {
+        if (classroom.facultyId) {
+          classroomsByFaculty.set(
+            classroom.facultyId, 
+            (classroomsByFaculty.get(classroom.facultyId) || 0) + 1
+          );
+        }
+      });
+      
+      faculty.forEach(prof => {
+        // Count by department
+        const deptId = prof.departmentId || 0;
+        byDepartment.set(deptId, (byDepartment.get(deptId) || 0) + 1);
+      });
+      
+      // Format response
+      const response = {
+        totalFaculty,
+        byDepartment: Array.from(byDepartment.entries()).map(([deptId, count]) => ({ departmentId: deptId, count })),
+        // Include detailed faculty data with classroom counts
+        faculty: faculty.map(prof => ({
+          id: prof.id,
+          name: `${prof.user.firstName} ${prof.user.lastName}`,
+          title: prof.title,
+          departmentId: prof.departmentId,
+          classroomCount: classroomsByFaculty.get(prof.id) || 0
+        }))
+      };
+      
+      res.json(response);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch faculty analytics" });
+    }
+  });
+  
+  app.get("/api/analytics/enrollments", isAuthenticated, hasRole(UserRole.ADMIN), async (req, res) => {
+    try {
+      const enrollments = await storage.getAllEnrollments();
+      const classrooms = await storage.getAllClassrooms();
+      
+      // Calculate basic analytics - create a histogram by month
+      const byMonth = new Map<string, number>();
+      const now = new Date();
+      
+      // Create initial data for the last 12 months
+      for (let i = 0; i < 12; i++) {
+        const d = new Date(now);
+        d.setMonth(d.getMonth() - i);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        byMonth.set(key, 0);
+      }
+      
+      // Count enrollments by month
+      enrollments.forEach(enrollment => {
+        const date = new Date(enrollment.createdAt);
+        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        
+        if (byMonth.has(key)) {
+          byMonth.set(key, (byMonth.get(key) || 0) + 1);
+        }
+      });
+      
+      // Count enrollments by classroom
+      const byClassroom = new Map<number, number>();
+      enrollments.forEach(enrollment => {
+        byClassroom.set(
+          enrollment.classroomId, 
+          (byClassroom.get(enrollment.classroomId) || 0) + 1
+        );
+      });
+      
+      // Format response
+      const response = {
+        totalEnrollments: enrollments.length,
+        byMonth: Array.from(byMonth.entries())
+          .map(([month, count]) => ({ month, count }))
+          .sort((a, b) => a.month.localeCompare(b.month)),
+        byClassroom: Array.from(byClassroom.entries()).map(([classroomId, count]) => {
+          const classroom = classrooms.find(c => c.id === classroomId);
+          return {
+            classroomId,
+            name: classroom ? classroom.name : 'Unknown',
+            count
+          };
+        }).sort((a, b) => b.count - a.count)
+      };
+      
+      res.json(response);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch enrollment analytics" });
+    }
+  });
+  
+  app.get("/api/analytics/performance", isAuthenticated, hasRole(UserRole.ADMIN), async (req, res) => {
+    try {
+      const students = await storage.getAllStudents();
+      const assignments = await storage.getAllAssignments();
+      const submissions = await storage.getAllSubmissions();
+      const departments = await storage.getAllDepartments();
+      
+      // GPA by department
+      const gpaByDepartment = new Map<number, { total: number, count: number }>();
+      students.forEach(student => {
+        if (student.departmentId && student.gpa) {
+          const current = gpaByDepartment.get(student.departmentId) || { total: 0, count: 0 };
+          gpaByDepartment.set(student.departmentId, {
+            total: current.total + parseFloat(student.gpa),
+            count: current.count + 1
+          });
+        }
+      });
+      
+      // Calculate submission rates
+      const submissionRates = new Map<number, { submitted: number, total: number }>();
+      submissions.forEach(submission => {
+        const assignmentId = submission.assignmentId;
+        const current = submissionRates.get(assignmentId) || { submitted: 0, total: 0 };
+        submissionRates.set(assignmentId, {
+          ...current,
+          submitted: current.submitted + 1
+        });
+      });
+      
+      // Add all assignments to the map
+      assignments.forEach(assignment => {
+        const current = submissionRates.get(assignment.id) || { submitted: 0, total: 0 };
+        submissionRates.set(assignment.id, {
+          ...current,
+          total: current.total + students.length // simplified - assuming all students should submit
+        });
+      });
+      
+      // Calculate average submission rates
+      const avgSubmissionRate = Array.from(submissionRates.values()).reduce(
+        (acc, { submitted, total }) => acc + (total > 0 ? submitted / total : 0), 
+        0
+      ) / submissionRates.size;
+      
+      // Format response
+      const response = {
+        averageGpa: (students.reduce((acc, s) => acc + parseFloat(s.gpa || "0"), 0) / students.length).toFixed(2),
+        gpaByDepartment: Array.from(gpaByDepartment.entries()).map(([deptId, data]) => {
+          const dept = departments.find(d => d.id === deptId);
+          return {
+            departmentId: deptId,
+            departmentName: dept ? dept.name : 'Unknown',
+            averageGpa: (data.total / data.count).toFixed(2)
+          };
+        }),
+        submissionRate: (avgSubmissionRate * 100).toFixed(1) + '%',
+        assignmentCompletionRates: Array.from(submissionRates.entries())
+          .map(([assignmentId, data]) => {
+            const assignment = assignments.find(a => a.id === assignmentId);
+            return {
+              assignmentId,
+              title: assignment ? assignment.title : 'Unknown',
+              completionRate: ((data.submitted / data.total) * 100).toFixed(1) + '%',
+              submitted: data.submitted,
+              total: data.total
+            };
+          })
+          .sort((a, b) => a.assignmentId - b.assignmentId)
+      };
+      
+      res.json(response);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch performance analytics" });
+    }
+  });
+  
+  app.get("/api/analytics/resources", isAuthenticated, hasRole(UserRole.ADMIN), async (req, res) => {
+    try {
+      const materials = await storage.getAllMaterials();
+      const classrooms = await storage.getAllClassrooms();
+      
+      // Calculate materials by type
+      const byType = new Map<string, number>();
+      materials.forEach(material => {
+        byType.set(material.type, (byType.get(material.type) || 0) + 1);
+      });
+      
+      // Calculate materials by classroom
+      const byClassroom = new Map<number, number>();
+      materials.forEach(material => {
+        byClassroom.set(
+          material.classroomId, 
+          (byClassroom.get(material.classroomId) || 0) + 1
+        );
+      });
+      
+      // Format response
+      const response = {
+        totalMaterials: materials.length,
+        byType: Array.from(byType.entries())
+          .map(([type, count]) => ({ type, count }))
+          .sort((a, b) => b.count - a.count),
+        byClassroom: Array.from(byClassroom.entries())
+          .map(([classroomId, count]) => {
+            const classroom = classrooms.find(c => c.id === classroomId);
+            return {
+              classroomId,
+              name: classroom ? classroom.name : 'Unknown',
+              count
+            };
+          })
+          .sort((a, b) => b.count - a.count),
+        recentMaterials: materials
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 10)
+          .map(material => {
+            const classroom = classrooms.find(c => c.id === material.classroomId);
+            return {
+              id: material.id,
+              title: material.title,
+              type: material.type,
+              classroomName: classroom ? classroom.name : 'Unknown',
+              createdAt: material.createdAt
+            };
+          })
+      };
+      
+      res.json(response);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch resource analytics" });
+    }
+  });
+  
   // Student specific routes
   // ======================
 

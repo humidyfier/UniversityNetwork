@@ -9,6 +9,7 @@ import { ThemeProvider } from "./components/ui/theme-toggle";
 
 // Pages
 import AdminDashboard from "@/pages/admin/dashboard";
+import AdminAnalytics from "@/pages/admin/analytics";
 import FacultyDashboard from "@/pages/faculty/dashboard";
 import StudentDashboard from "@/pages/student/dashboard";
 import FacultyManagement from "@/pages/admin/faculty-management";
@@ -29,6 +30,7 @@ function Router() {
 
       {/* Admin Routes */}
       <ProtectedRoute path="/" role="admin" component={AdminDashboard} />
+      <ProtectedRoute path="/admin/analytics" role="admin" component={AdminAnalytics} />
       <ProtectedRoute path="/admin/faculty" role="admin" component={FacultyManagement} />
       <ProtectedRoute path="/admin/students" role="admin" component={StudentManagement} />
       <ProtectedRoute path="/admin/classrooms" role="admin" component={ClassroomManagement} />
