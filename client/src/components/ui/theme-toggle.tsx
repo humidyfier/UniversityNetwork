@@ -75,16 +75,35 @@ export const useTheme = () => {
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const toggleTheme = () => {
+    setIsAnimating(true);
+    // Small delay to let the animation play
+    setTimeout(() => {
+      setTheme(theme === "light" ? "dark" : "light");
+      setTimeout(() => setIsAnimating(false), 600);
+    }, 150);
+  };
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      aria-label="Toggle theme"
-    >
-      <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-    </Button>
+    <div className="relative">
+      {isAnimating && (
+        <div className="absolute inset-0 z-10">
+          <div className={`absolute inset-0 rounded-full ${theme === 'light' ? 'bg-navy' : 'bg-sky-blue'} animate-ping opacity-30`}></div>
+          <div className={`absolute inset-0 rounded-full ${theme === 'light' ? 'bg-beige' : 'bg-teal'} animate-ping delay-75 opacity-20`}></div>
+        </div>
+      )}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleTheme}
+        aria-label="Toggle theme"
+        className={`${isAnimating ? 'animate-pulse' : ''} relative z-20`}
+      >
+        <Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-500 ease-in-out dark:-rotate-90 dark:scale-0" />
+        <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all duration-500 ease-in-out dark:rotate-0 dark:scale-100" />
+      </Button>
+    </div>
   );
 }
