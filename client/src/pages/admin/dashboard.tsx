@@ -9,7 +9,8 @@ import {
   DoorOpen,
   Building2,
   PlusCircle,
-  ArrowRight
+  ArrowRight,
+  BarChart3
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";

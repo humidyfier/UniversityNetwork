@@ -6,7 +6,8 @@ import {
   Classroom, InsertClassroom, Enrollment, InsertEnrollment,
   Assignment, InsertAssignment, Submission, InsertSubmission,
   Material, InsertMaterial, Achievement, InsertAchievement,
-  Follow, InsertFollow, Announcement, InsertAnnouncement
+  Follow, InsertFollow, Announcement, InsertAnnouncement,
+  UserRoleType
 } from "@shared/schema";
 
 const MemoryStore = createMemoryStore(session);
@@ -88,6 +89,12 @@ export interface IStorage {
   createAnnouncement(announcement: InsertAnnouncement): Promise<Announcement>;
   getAnnouncementById(id: number): Promise<Announcement | undefined>;
   getAnnouncementsByClassroomId(classroomId: number): Promise<Announcement[]>;
+  
+  // Analytics methods
+  getAllEnrollments(): Promise<Enrollment[]>;
+  getAllAssignments(): Promise<Assignment[]>;
+  getAllSubmissions(): Promise<Submission[]>;
+  getAllMaterials(): Promise<Material[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -158,7 +165,15 @@ export class MemStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.userIdCounter++;
     const now = new Date();
-    const user: User = { ...insertUser, id, createdAt: now };
+    // Convert string role to UserRoleType to ensure type compatibility
+    const userRole = insertUser.role as UserRoleType;
+    const user: User = { 
+      ...insertUser, 
+      id, 
+      createdAt: now,
+      role: userRole,
+      profilePicture: insertUser.profilePicture || null 
+    };
     this.users.set(id, user);
     return user;
   }
@@ -188,7 +203,13 @@ export class MemStorage implements IStorage {
   async createFacultyProfile(profile: InsertFacultyProfile): Promise<FacultyProfile> {
     const id = this.facultyProfileIdCounter++;
     const now = new Date();
-    const newProfile: FacultyProfile = { ...profile, id, createdAt: now };
+    const newProfile: FacultyProfile = { 
+      ...profile, 
+      id, 
+      createdAt: now,
+      departmentId: profile.departmentId || null,
+      bio: profile.bio || null
+    };
     this.facultyProfiles.set(id, newProfile);
     return newProfile;
   }
@@ -227,6 +248,7 @@ export class MemStorage implements IStorage {
       ...profile, 
       id, 
       createdAt: now,
+      departmentId: profile.departmentId || null,
       achievementPoints: profile.achievementPoints || 0,
       gpa: profile.gpa || "0.0"
     };
@@ -279,7 +301,15 @@ export class MemStorage implements IStorage {
   async createClassroom(classroom: InsertClassroom): Promise<Classroom> {
     const id = this.classroomIdCounter++;
     const now = new Date();
-    const newClassroom: Classroom = { ...classroom, id, createdAt: now };
+    const newClassroom: Classroom = { 
+      ...classroom, 
+      id, 
+      createdAt: now,
+      departmentId: classroom.departmentId || null,
+      facultyId: classroom.facultyId || null,
+      description: classroom.description || null,
+      schedule: classroom.schedule || null
+    };
     this.classrooms.set(id, newClassroom);
     return newClassroom;
   }
@@ -514,6 +544,23 @@ export class MemStorage implements IStorage {
     return Array.from(this.announcements.values()).filter(
       (announcement) => announcement.classroomId === classroomId,
     );
+  }
+
+  // Analytics methods
+  async getAllEnrollments(): Promise<Enrollment[]> {
+    return Array.from(this.enrollments.values());
+  }
+
+  async getAllAssignments(): Promise<Assignment[]> {
+    return Array.from(this.assignments.values());
+  }
+
+  async getAllSubmissions(): Promise<Submission[]> {
+    return Array.from(this.submissions.values());
+  }
+
+  async getAllMaterials(): Promise<Material[]> {
+    return Array.from(this.materials.values());
   }
 }
 
